@@ -1,0 +1,9 @@
+{
+	"name": "adf-orders-dev-centralindia-001-AB",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ac0cd464-c494-4878-b9a8-52eb2865c9e4",
+		"tenantId": "701272b2-8c0d-45dd-bc20-83f0221063f3"
+	}
+}
