@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-orders-dev-centralindia-001-AB"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"localSqlServer_connectionString": {
+			"value": ""
+		},
+		"ls_ablob_azuredatafactoryabdulr_connectionString": {
+			"value": ""
+		},
+		"ls_dl_abdatafactorydl_accountKey": {
+			"value": ""
+		},
+		"ls_dl_orders_accountKey": {
+			"value": ""
+		},
+		"ls_st_orders_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://dlorders001ab.dfs.core.windows.net/"
+		},
+		"ls_dl_abdatafactorydl_properties_typeProperties_url": {
+			"value": "https://abdatafactorydl.dfs.core.windows.net/"
+		},
+		"ls_dl_orders_properties_typeProperties_url": {
+			"value": "https://dlorders001ab.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

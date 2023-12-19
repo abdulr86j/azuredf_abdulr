@@ -1,0 +1,105 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-orders-dev-centralindia-001-AB"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"localSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'localSqlServer'"
+		},
+		"ls_ablob_azuredatafactoryabdulr_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_ablob_azuredatafactoryabdulr'"
+		},
+		"ls_dl_abdatafactorydl_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_dl_abdatafactorydl'"
+		},
+		"ls_dl_orders_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_dl_orders'"
+		},
+		"ls_st_orders_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_st_orders'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dlorders001ab.dfs.core.windows.net/"
+		},
+		"ls_dl_abdatafactorydl_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://abdatafactorydl.dfs.core.windows.net/"
+		},
+		"ls_dl_orders_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dlorders001ab.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-orders-dev-centralindia-001-AB_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDataLakeStorage1_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					},
+					"ls_ablob_azuredatafactoryabdulr_connectionString": {
+						"value": "[parameters('ls_ablob_azuredatafactoryabdulr_connectionString')]"
+					},
+					"ls_dl_abdatafactorydl_accountKey": {
+						"value": "[parameters('ls_dl_abdatafactorydl_accountKey')]"
+					},
+					"ls_dl_orders_accountKey": {
+						"value": "[parameters('ls_dl_orders_accountKey')]"
+					},
+					"ls_st_orders_connectionString": {
+						"value": "[parameters('ls_st_orders_connectionString')]"
+					},
+					"localSqlServer_connectionString": {
+						"value": "[parameters('localSqlServer_connectionString')]"
+					},
+					"AzureDataLakeStorage1_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"ls_dl_abdatafactorydl_properties_typeProperties_url": {
+						"value": "[parameters('ls_dl_abdatafactorydl_properties_typeProperties_url')]"
+					},
+					"ls_dl_orders_properties_typeProperties_url": {
+						"value": "[parameters('ls_dl_orders_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
