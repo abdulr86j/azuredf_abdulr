@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select * from dbo.Emp",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from dbo.Emp where name = ',\n'''' ,\npipeline().parameters.p_name,\n ''''\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -25,10 +28,15 @@
 						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
 				}
 			}
 		],
+		"parameters": {
+			"p_name": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "DEisKool"
 		},
