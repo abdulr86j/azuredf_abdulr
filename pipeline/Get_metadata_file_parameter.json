@@ -16,18 +16,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ADF_getmetadata_file",
+						"referenceName": "ADF_getmetadata_folder",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"columnCount",
-						"contentMD5",
 						"exists",
 						"itemName",
 						"itemType",
 						"lastModified",
-						"size",
-						"structure"
+						"childItems"
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
