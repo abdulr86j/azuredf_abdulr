@@ -1,0 +1,28 @@
+{
+	"name": "ADF_getmetadata_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AZFactory24_gen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "*.txt",
+				"fileSystem": "dataiskool"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id\tname\tcity\tsalary",
+				"type": "String"
+			}
+		]
+	}
+}
