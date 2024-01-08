@@ -11,6 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "employee.txt",
+				"folderPath": "landing/level1",
 				"fileSystem": "dataiskool"
 			},
 			"columnDelimiter": ",",
