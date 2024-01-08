@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": "landing/level1",
 				"fileSystem": "dataiskool"
 			},
 			"columnDelimiter": ",",
