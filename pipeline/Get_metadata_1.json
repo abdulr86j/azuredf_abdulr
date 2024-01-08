@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "AZdatafactory24_getmetadata",
+						"referenceName": "AZdatafactory24_getmetadata_2",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
