@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "EmployeesNew.csv.txt",
-				"folderPath": "AB_test_jan24",
+				"folderPath": "ABtest24_destination",
 				"fileSystem": "raw"
 			},
 			"columnDelimiter": ",",
