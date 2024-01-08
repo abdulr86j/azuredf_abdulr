@@ -16,14 +16,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "AZdatafactory24_getmetadata_2",
+						"referenceName": "ADF_getmetadata_file",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
+						"columnCount",
+						"contentMD5",
+						"exists",
 						"itemName",
 						"itemType",
-						"exists",
-						"lastModified"
+						"lastModified",
+						"size",
+						"structure"
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
