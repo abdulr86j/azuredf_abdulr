@@ -19,7 +19,7 @@
 						"referenceName": "ADF_getmetadata_folder",
 						"type": "DatasetReference",
 						"parameters": {
-							"filename": "emp*.txt"
+							"filename": "emp_*.txt"
 						}
 					},
 					"fieldList": [
