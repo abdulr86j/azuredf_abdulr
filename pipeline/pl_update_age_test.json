@@ -29,6 +29,30 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "get_employee",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_age",
+					"value": {
+						"value": "@string(\n    sub(\n        int(formatDateTime(utcNow(),'yyyy' ))\n        , int(formatDateTime(activity('get_employee').output.firstRow.Dob,'yyyy' )))\n        )\n)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
