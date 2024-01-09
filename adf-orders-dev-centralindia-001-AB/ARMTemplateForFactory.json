@@ -1611,6 +1611,88 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_sqldb_sql')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_update_age_test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "get_employee",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('select * from dbo.Emp WHERE name = ',\n'''',\npipeline().parameters.p_name,\n''''\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sqldb_sql",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "get_employee",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_age",
+							"value": {
+								"value": "@string(\n    sub(\n        int(formatDateTime(utcNow(),'yyyy' ))\n        , int(formatDateTime(activity('get_employee').output.firstRow.Dob,'yyyy' )))\n        )\n)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"p_name": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"v_age": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "DEisKool"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sqldb_sql')]"
+			]
 		}
 	]
 }
