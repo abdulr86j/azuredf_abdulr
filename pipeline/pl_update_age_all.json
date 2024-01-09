@@ -44,12 +44,23 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('get_employee').output.value",
+						"type": "Expression"
+					},
 					"isSequential": true,
 					"activities": [
 						{
 							"name": "Set variable1",
 							"type": "SetVariable",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set variable2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"secureOutput": false,
 								"secureInput": false
@@ -58,7 +69,7 @@
 							"typeProperties": {
 								"variableName": "v_age",
 								"value": {
-									"value": "@string(\n    sub(\n        int(formatDateTime(utcNow(),'yyyy' ))\n        , int(formatDateTime(activity('get_employee').output.firstRow.Dob,'yyyy' )))\n        )\n",
+									"value": "@string(\n    sub(\n        int(formatDateTime(utcNow(),'yyyy' ))\n        , int(formatDateTime(item().Dob,'yyyy' )))\n        )",
 									"type": "Expression"
 								}
 							}
@@ -86,7 +97,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('update dbo.Emp set age = ',\nvariables('v_age'),\n' where name =  ',\n'''',\npipeline().parameters.p_name,\n'''; select 1'\n)",
+										"value": "@concat('update dbo.Emp set age = ',\nvariables('v_age'),\n' where name =  ',\n'''',\nitem().name,\n'''; select 1'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -95,6 +106,23 @@
 								"dataset": {
 									"referenceName": "ds_sqldb_sql",
 									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_age",
+								"value": {
+									"value": "@concat('')",
+									"type": "Expression"
 								}
 							}
 						}
