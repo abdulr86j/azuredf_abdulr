@@ -1,5 +1,5 @@
 {
-	"name": "pl_update_age_all",
+	"name": "pl_update_age_all_foreach",
 	"properties": {
 		"activities": [
 			{
