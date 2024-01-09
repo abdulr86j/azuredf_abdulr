@@ -49,7 +49,7 @@
 				"typeProperties": {
 					"variableName": "v_age",
 					"value": {
-						"value": "@string(\n    sub(\n        int(formatDateTime(utcNow(),'yyyy' ))\n        , int(formatDateTime(activity('get_employee').output.firstRow.Dob,'yyyy' )))\n        )\n)",
+						"value": "@string(\n    sub(\n        int(formatDateTime(utcNow(),'yyyy' ))\n        , int(formatDateTime(activity('get_employee').output.firstRow.Dob,'yyyy' )))\n        )\n",
 						"type": "Expression"
 					}
 				}
