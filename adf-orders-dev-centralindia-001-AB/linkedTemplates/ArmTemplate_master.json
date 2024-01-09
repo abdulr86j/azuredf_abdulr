@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
 		},
+		"AzureSQLDatabase_DEMODB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSQLDatabase_DEMODB'"
+		},
 		"localSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'localSqlServer'"
@@ -31,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_st_orders'"
 		},
+		"AZFactory24_gen2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AZFactory24_gen2'"
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dlorders001ab.dfs.core.windows.net/"
@@ -42,6 +50,10 @@
 		"ls_dl_orders_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dlorders001ab.dfs.core.windows.net/"
+		},
+		"AZFactory24_gen2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://abdatafactorydl.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"type": "string",
@@ -73,6 +85,9 @@
 					"AzureDataLakeStorage1_accountKey": {
 						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
 					},
+					"AzureSQLDatabase_DEMODB_connectionString": {
+						"value": "[parameters('AzureSQLDatabase_DEMODB_connectionString')]"
+					},
 					"ls_ablob_azuredatafactoryabdulr_connectionString": {
 						"value": "[parameters('ls_ablob_azuredatafactoryabdulr_connectionString')]"
 					},
@@ -85,6 +100,9 @@
 					"ls_st_orders_connectionString": {
 						"value": "[parameters('ls_st_orders_connectionString')]"
 					},
+					"AZFactory24_gen2_accountKey": {
+						"value": "[parameters('AZFactory24_gen2_accountKey')]"
+					},
 					"localSqlServer_connectionString": {
 						"value": "[parameters('localSqlServer_connectionString')]"
 					},
@@ -96,10 +114,33 @@
 					},
 					"ls_dl_orders_properties_typeProperties_url": {
 						"value": "[parameters('ls_dl_orders_properties_typeProperties_url')]"
+					},
+					"AZFactory24_gen2_properties_typeProperties_url": {
+						"value": "[parameters('AZFactory24_gen2_properties_typeProperties_url')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "adf-orders-dev-centralindia-001-AB_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-orders-dev-centralindia-001-AB_ArmTemplate_0')]"
+			]
 		}
 	]
 }

@@ -8,6 +8,9 @@
 		"AzureDataLakeStorage1_accountKey": {
 			"value": ""
 		},
+		"AzureSQLDatabase_DEMODB_connectionString": {
+			"value": ""
+		},
 		"localSqlServer_connectionString": {
 			"value": ""
 		},
@@ -23,6 +26,9 @@
 		"ls_st_orders_connectionString": {
 			"value": ""
 		},
+		"AZFactory24_gen2_accountKey": {
+			"value": ""
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://dlorders001ab.dfs.core.windows.net/"
 		},
@@ -31,6 +37,9 @@
 		},
 		"ls_dl_orders_properties_typeProperties_url": {
 			"value": "https://dlorders001ab.dfs.core.windows.net/"
+		},
+		"AZFactory24_gen2_properties_typeProperties_url": {
+			"value": "https://abdatafactorydl.dfs.core.windows.net/"
 		}
 	}
 }
