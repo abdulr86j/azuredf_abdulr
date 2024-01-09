@@ -1,6 +1,16 @@
 {
 	"name": "pl_update_age",
 	"properties": {
+		"parameters": {
+			"p_name": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"v_age": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "DEisKool"
 		},
