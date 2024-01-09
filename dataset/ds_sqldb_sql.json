@@ -1,0 +1,15 @@
+{
+	"name": "ds_sqldb_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSQLDatabase_DEMODB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DEiskool"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
