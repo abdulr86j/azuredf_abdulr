@@ -17,14 +17,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select * from Cloudanddata.EmployeesNew",
+						"sqlReaderQuery": "select \r\nmax(case when property_name = 'container_name' then property_value end) container_name,\r\nmax(case when property_name = 'folder_name' then property_value end) folder_name,\r\nmax(case when property_name = 'file_name' then property_value end) file_name\r\nfrom  dbo.etl_metadata_config",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
 						"referenceName": "ds_sqldb_sql",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": true
 				}
 			}
 		],
