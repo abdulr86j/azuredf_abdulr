@@ -1,0 +1,9 @@
+{
+	"name": "pl_validate_file_exists",
+	"properties": {
+		"folder": {
+			"name": "DEisKool/ETL_pipline"
+		},
+		"annotations": []
+	}
+}
