@@ -1,0 +1,43 @@
+{
+	"name": "dsSource_Cloud_data_Uni",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AZFactory24_gen2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "CloudAndDataUniverse"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "EmployeesNew.csv",
+				"fileSystem": "cloudanddatauni"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "city",
+				"type": "String"
+			},
+			{
+				"name": "salary",
+				"type": "String"
+			}
+		]
+	}
+}
