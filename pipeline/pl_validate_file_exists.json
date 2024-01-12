@@ -29,6 +29,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"p_etl_job_name": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "DEisKool/ETL_pipline"
 		},
