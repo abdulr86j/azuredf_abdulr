@@ -139,6 +139,42 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "get_unique_filename",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "remove_file_extensions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select distinct value as filename from string_split( ''',\nvariables('v_files'),\n''',''|'') where trim value <> ''''\n'\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_sql",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
 			}
 		],
 		"parameters": {
