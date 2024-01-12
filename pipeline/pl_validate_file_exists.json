@@ -163,7 +163,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select distinct value as filename from string_split( ''',\nvariables('v_files'),\n''',''|'') where trim value <> ''''\n'\n)",
+							"value": "@concat('select distinct value as filename from string_split( ''',\nvariables('v_files'),\n''',''|'') where trim (value) <> ''''\n'\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -173,7 +173,7 @@
 						"referenceName": "ds_sqldb_sql",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": true
+					"firstRowOnly": false
 				}
 			}
 		],
