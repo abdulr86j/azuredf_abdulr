@@ -1,0 +1,16 @@
+{
+	"name": "ds_AZ_Sql_tbl1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSQLDatabase_DEMODB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "Cloudanddata",
+			"table": "EmployeesNew"
+		}
+	}
+}
