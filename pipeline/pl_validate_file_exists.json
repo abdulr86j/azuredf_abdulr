@@ -253,7 +253,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"filename": {
-											"value": "@concat(item().filename,'.ctl')",
+											"value": "@concat(item().filename,'.csv.fin')",
 											"type": "Expression"
 										},
 										"foldername": {
@@ -310,6 +310,26 @@
 										"typeProperties": {
 											"variableName": "v_all_files_exists",
 											"value": "false"
+										}
+									},
+									{
+										"name": "Fail1",
+										"type": "Fail",
+										"dependsOn": [
+											{
+												"activity": "all_variables_do_not_exist",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"message": {
+												"value": "@concat('All four files do not exist')",
+												"type": "Expression"
+											},
+											"errorCode": "5001"
 										}
 									}
 								],
