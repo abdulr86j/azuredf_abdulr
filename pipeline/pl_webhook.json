@@ -1,0 +1,30 @@
+{
+	"name": "pl_webhook",
+	"properties": {
+		"activities": [
+			{
+				"name": "send email",
+				"type": "WebHook",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-12.centralindia.logic.azure.com:443/workflows/490c453542da473d88f0925b4e4ca4b4/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kH8mW4UeChVbOqigGRq5uWoKtS_5MNTRlbr-TCdTBiA",
+					"method": "POST",
+					"headers": {
+						"Content-type": "application\\json"
+					},
+					"body": "{\ncallBackUri: URL\n}",
+					"timeout": "00:01:00"
+				}
+			}
+		],
+		"folder": {
+			"name": "Wafastudies"
+		},
+		"annotations": []
+	}
+}
