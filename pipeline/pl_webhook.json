@@ -5,22 +5,40 @@
 			{
 				"name": "send email",
 				"type": "WebHook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Execute Pipeline1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://prod-12.centralindia.logic.azure.com:443/workflows/490c453542da473d88f0925b4e4ca4b4/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kH8mW4UeChVbOqigGRq5uWoKtS_5MNTRlbr-TCdTBiA",
+					"url": "https://prod-15.centralindia.logic.azure.com:443/workflows/8811593e8c1749c285db4a608493b4d2/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=64oaT_f_sRjKBP9zyhkYjI-b5tjelmZlnEPUurit8pU",
 					"method": "POST",
-					"headers": {
-						"Content-type": "application\\json"
-					},
 					"body": {
-						"CallBackUri": "URL"
+						"value": "{\n    \"pipelinename\":@{pipeline().Pipeline},\n    \"ErrorMessage\":@{activity('Execute Pipeline1').Error.Message}\n}",
+						"type": "Expression"
 					},
 					"timeout": "00:01:00"
+				}
+			},
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "abtest_copy",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			}
 		],
