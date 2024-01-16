@@ -22,7 +22,7 @@
 					"url": "https://prod-15.centralindia.logic.azure.com:443/workflows/8811593e8c1749c285db4a608493b4d2/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=64oaT_f_sRjKBP9zyhkYjI-b5tjelmZlnEPUurit8pU",
 					"method": "POST",
 					"body": {
-						"value": "{\n    \"pipelinename\":@{pipeline().Pipeline},\n    \"ErrorMessage\":@{activity('Execute Pipeline1').Error.Message}\n}",
+						"value": "{\n    \"pipelinename\":@{pipeline().Pipeline}\n}",
 						"type": "Expression"
 					},
 					"timeout": "00:01:00"
