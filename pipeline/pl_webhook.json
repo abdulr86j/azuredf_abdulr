@@ -17,7 +17,9 @@
 					"headers": {
 						"Content-type": "application\\json"
 					},
-					"body": "{\ncallBackUri: URL\n}",
+					"body": {
+						"CallBackUri": "URL"
+					},
 					"timeout": "00:01:00"
 				}
 			}
