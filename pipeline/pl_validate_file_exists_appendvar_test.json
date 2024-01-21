@@ -1,0 +1,398 @@
+{
+	"name": "pl_validate_file_exists_appendvar_test",
+	"properties": {
+		"activities": [
+			{
+				"name": "get_file_metadata_config",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'select \nmax(case when property_name = ''container_name'' then property_value end) container_name,\nmax(case when property_name = ''folder_name'' then property_value end) folder_name,\nmax(case when property_name = ''file_name'' then property_value end) file_name\nfrom  dbo.etl_metadata_config where etl_job_name = ',\n'''',\npipeline().parameters.p_etl_job_name,\n''''\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_sql",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "get_all_files",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "get_file_metadata_config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_text_file",
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": {
+								"value": "@activity('get_file_metadata_config').output.firstRow.file_name",
+								"type": "Expression"
+							},
+							"foldername": {
+								"value": "@activity('get_file_metadata_config').output.firstRow.folder_name",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "remove_file_extensions",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "get_all_files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get_all_files').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "original_file_list",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_tempfiles",
+								"value": {
+									"value": "@variables('v_files')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "add_files_to_list",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "original_file_list",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_files",
+								"value": {
+									"value": "@concat(variables('v_tempfiles'),substring(item().name,0 ,indexOf(item().name,'.' )),'|')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "get_unique_filename",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "remove_file_extensions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select distinct value as filename from string_split( ''',\nvariables('v_files'),\n''',''|'') where trim (value) <> ''''\n'\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sqldb_sql",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "get_unique_filename",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get_unique_filename').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "validate_data_file",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "ds_text_file",
+									"type": "DatasetReference",
+									"parameters": {
+										"filename": {
+											"value": "@concat(item().filename,'.csv')",
+											"type": "Expression"
+										},
+										"foldername": {
+											"value": "@activity('get_file_metadata_config').output.firstRow.folder_name",
+											"type": "Expression"
+										}
+									}
+								},
+								"fieldList": [
+									"exists"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							}
+						},
+						{
+							"name": "validate_ctl_file",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "ds_text_file",
+									"type": "DatasetReference",
+									"parameters": {
+										"filename": {
+											"value": "@concat(item().filename,'.csv.fin')",
+											"type": "Expression"
+										},
+										"foldername": {
+											"value": "@activity('get_file_metadata_config').output.firstRow.folder_name",
+											"type": "Expression"
+										}
+									}
+								},
+								"fieldList": [
+									"exists"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							}
+						},
+						{
+							"name": "If_all_file_exists",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "validate_data_file",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "validate_ctl_file",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@and(equals(activity('validate_data_file').output.exists,true)\r\n,equals(activity('validate_ctl_file').output.exists,true))",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "all_variables_do_not_exist",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "v_all_files_exists",
+											"value": "false"
+										}
+									},
+									{
+										"name": "Fail1",
+										"type": "Fail",
+										"dependsOn": [
+											{
+												"activity": "all_variables_do_not_exist",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"message": {
+												"value": "@concat('All four files do not exist')",
+												"type": "Expression"
+											},
+											"errorCode": "5001"
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "all_file_exist",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "v_all_files_exists",
+											"value": "true"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"parameters": {
+			"p_etl_job_name": {
+				"type": "string",
+				"defaultValue": "load_emp_file"
+			}
+		},
+		"variables": {
+			"v_files": {
+				"type": "String"
+			},
+			"v_tempfiles": {
+				"type": "String"
+			},
+			"v_all_files_exists": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "DEisKool/ETL_pipline"
+		},
+		"annotations": []
+	}
+}
