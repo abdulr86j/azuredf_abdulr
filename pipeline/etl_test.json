@@ -1,0 +1,9 @@
+{
+	"name": "etl_test",
+	"properties": {
+		"folder": {
+			"name": "DEisKool/ETL_pipline/test"
+		},
+		"annotations": []
+	}
+}
