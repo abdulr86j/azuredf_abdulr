@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "EmployeesNew1.csv",
 				"folderPath": "ABtest24_destination",
 				"fileSystem": "raw"
 			},
